@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>UPC Event</string>
+			<key>Values</key>
+			<array>
+				<string>updated</string>
+				<string>deleted</string>
+				<string>expired</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Updated</string>
+				<string>Deleted</string>
+				<string>Expired</string>
+			</array>
+			<key>Key</key>
+			<string>upc_event</string>
+			<key>DefaultValue</key>
+			<string>updated</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Payment Intent Event</string>
+			<key>Values</key>
+			<array>
+				<string>updated</string>
+				<string>deleted</string>
+				<string>completed</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Updated</string>
+				<string>Deleted</string>
+				<string>Completed</string>
+			</array>
+			<key>Key</key>
+			<string>payment_intent_event</string>
+			<key>DefaultValue</key>
+			<string>completed</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Mock UPC and Intent Endpoints</string>
+			<key>Key</key>
+			<string>mock_endpoints_enabled</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+	</array>
+</dict>
+</plist>
