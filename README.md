@@ -267,7 +267,7 @@ in the App.tsx or parent level Component
     };
     const linkSubscription = Linking.addEventListener('url', handleUrlEvents);
 
-    Linking.getInitialURL(url => processUniversalLink(url));
+    Linking.getInitialURL().then((url) => url && processUniversalLink(url));
     return () => linkSubscription.remove();
   }, []);
 ```
