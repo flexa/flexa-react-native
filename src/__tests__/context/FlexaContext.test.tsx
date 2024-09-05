@@ -17,7 +17,7 @@ describe('FlexaContext tests', () => {
     expect(initSpy).toHaveBeenCalledWith('publishableKey', [], undefined);
   });
 
-  it('FlexaContext.FlexaContextConsumer has props for payment.', async () => {
+  it('FlexaContext.FlexaContextConsumer has props for payment.', () => {
     const paymentSpy = jest.fn((paymentCB) => {
       paymentCB({ success: true });
     });

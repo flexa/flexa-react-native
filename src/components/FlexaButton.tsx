@@ -27,6 +27,7 @@ const FlexaButton = ({
   };
   return (
     <TouchableOpacity
+      testID="FlexaButtonTouchableOpacity"
       style={[styles.button, { width, height }, { ...style }]}
       onPress={handleClick}
     >

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FlexaButton tests matches snapshot. 1`] = `
+<View
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "height": 64,
+      "justifyContent": "center",
+      "opacity": 1,
+      "width": 64,
+    }
+  }
+  testID="FlexaButtonTouchableOpacity"
+>
+  <Image
+    resizeMode="contain"
+    source={
+      {
+        "testUri": "../../../src/components/flexaLogo.png",
+      }
+    }
+    style={
+      {
+        "borderRadius": 6,
+        "flex": 1,
+        "height": 64,
+        "width": 64,
+      }
+    }
+  />
+</View>
+`;
