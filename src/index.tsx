@@ -5,6 +5,8 @@ import {
   processUniversalLink,
   CUSTODY_MODEL,
   TransactionRequest,
+  dismissAllModals,
+  updateAppAccounts,
 } from './initialize';
 import FlexaButton from './components/FlexaButton';
 import { getLoginState, logout } from './auth';
@@ -19,4 +21,6 @@ export {
   processUniversalLink,
   CUSTODY_MODEL,
   TransactionRequest,
+  dismissAllModals,
+  updateAppAccounts,
 };

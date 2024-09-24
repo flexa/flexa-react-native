@@ -4,6 +4,9 @@ import Flexa
 @objc(FlexaReactNative)
 class FlexaReactNative: NSObject {
 
+    static var reactNativePaymentCallback: RCTResponseSenderBlock?
+    static var reactNativePaymentCallbackReject: RCTResponseSenderBlock?
+
     @objc func `init`(_ publishableKey: String, appAccounts: [[String : Any]], themingData: String) -> Void {
         Flexa.initialize(
             FXClient(publishableKey: publishableKey, appAccounts: self.buildAppAccountsArray(from: appAccounts), themingDataString: themingData)
@@ -13,20 +16,37 @@ class FlexaReactNative: NSObject {
     }
 
     @objc func payment(_ appAccounts: [[String : Any]], callback: @escaping RCTResponseSenderBlock, reject: @escaping RCTResponseSenderBlock) -> Void {
+
+        FlexaReactNative.reactNativePaymentCallback = callback
+        FlexaReactNative.reactNativePaymentCallbackReject = reject
+
         DispatchQueue.main.async {
             Flexa.sections([.spend])
                 .appAccounts(self.buildAppAccountsArray(from: appAccounts))
                 .onTransactionRequest { result in
                     switch result {
                     case .success(let transaction):
-                        callback([transaction.asDictionary])
+                        ((FlexaReactNative.reactNativePaymentCallback ?? callback)([transaction.asDictionary]))
                     case .failure:
-                        reject(nil)
+                      ((FlexaReactNative.reactNativePaymentCallbackReject ?? reject)(nil))
                     }
                 }
                 .open()
         }
         NSLog("Flexa.payment() invoked")
+        return
+    }
+
+    @objc func updatePaymentCallback(_ appAccounts: [[String : Any]], callback: @escaping RCTResponseSenderBlock, reject: @escaping RCTResponseSenderBlock) -> Void {
+        FlexaReactNative.reactNativePaymentCallback = callback
+        FlexaReactNative.reactNativePaymentCallbackReject = reject
+        NSLog("Flexa.updatePaymentCallback() invoked")
+        return
+    }
+
+    @objc func updateAppAccounts(_ appAccounts: [[String : Any]]) -> Void {
+        Flexa.updateAppAccounts(self.buildAppAccountsArray(from: appAccounts))
+        NSLog("Flexa.updateAppAccounts() invoked")
         return
     }
 
@@ -57,6 +77,21 @@ class FlexaReactNative: NSObject {
             self?.handleLoginStateResult(result: result, callback: callback)
         }
     }
+
+    @objc
+    func dismissAllModals(_ callback: @escaping RCTResponseSenderBlock) {
+        DispatchQueue.main.sync {
+            UIApplication
+                .shared
+                .connectedScenes
+                .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+                .last?.rootViewController?.dismiss(animated: true) {
+                    callback([true])
+                }
+
+        }
+    }
+
 
     @objc func transactionSent(_ sessionId: String, signature: String) {
         Flexa.transactionSent(commerceSessionId: sessionId, signature: signature)

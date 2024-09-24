@@ -60,13 +60,13 @@ export const getNativeFlexaModule = () =>
   NativeModules.FlexaReactNative
     ? NativeModules.FlexaReactNative
     : new Proxy(
-        {},
-        {
-          get() {
-            throw new Error(LINKING_ERROR);
-          },
-        }
-      );
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR);
+        },
+      }
+    );
 
 /**
  * Opens the Flexa for Flexa Payments
@@ -84,18 +84,20 @@ export function payment(
   onPaymentCallback: Function
 ): Promise<object> {
   return new Promise((resolve) => {
+    const transactionRequest = async (transaction: Transaction) => {
+      await onPaymentCallback({
+        transaction,
+        transactionSent: (txSignature: string) =>
+          getNativeFlexaModule().transactionSent(
+            transaction.commerceSessionId,
+            txSignature
+          ),
+      });
+      getNativeFlexaModule().updatePaymentCallback(appAccounts, transactionRequest, onPaymentCallback)
+    }
     getNativeFlexaModule().payment(
       appAccounts,
-      (transaction: Transaction) => {
-        onPaymentCallback({
-          transaction,
-          transactionSent: (txSignature: string) =>
-            getNativeFlexaModule().transactionSent(
-              transaction.commerceSessionId,
-              txSignature
-            ),
-        });
-      },
+      transactionRequest,
       onPaymentCallback
     );
     resolve({});
@@ -153,6 +155,63 @@ export function processUniversalLink(url: string) {
       }),
     android: () => {
       getNativeFlexaModule().processUniversalLink(url);
+    },
+  });
+
+  fn?.();
+}
+
+export function dismissAllModals() {
+  const fn = Platform.select({
+    ios: () =>
+      new Promise((resolve, reject) => {
+        try {
+          getNativeFlexaModule().dismissAllModals((result: any) => {
+            resolve(result);
+          })
+        } catch (e) {
+          reject(e)
+        }
+      }),
+    android: () =>
+      new Promise((resolve, reject) => {
+        try {
+          getNativeFlexaModule().dismissAllModals((result: any) => {
+            resolve(result);
+          })
+        } catch (e) {
+          reject(e)
+        }
+      })
+  });
+
+  return fn?.();
+}
+
+/**
+ * Updates the Flexa appAccounts with new availableAssets and balances
+ * Pass an appAccounts array as a parameter
+ *
+ * @example
+ * try {
+ *   updateAppAccounts(appAccounts)
+ * } catch (e) {
+ *   console.error(e)
+ * }
+ */
+export function updateAppAccounts(
+  appAccounts: AppAccount[],
+): void {
+  const fn = Platform.select({
+    ios: () => {
+      getNativeFlexaModule().updateAppAccounts(
+        appAccounts,
+      );
+    },
+    android: () => {
+      getNativeFlexaModule().updateAppAccounts(
+        appAccounts,
+      );
     },
   });
 

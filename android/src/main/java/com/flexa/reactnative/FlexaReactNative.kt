@@ -114,6 +114,29 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
     }
   }
 
+  @ReactMethod
+  fun updatePaymentCallback(appAccounts: ReadableArray, onSuccessCB: Callback, onFailure: Callback?) {
+    currentActivity?.let { activity ->
+      val appAccountsResult = appAccounts.toAppAccounts()
+      Flexa.updateAppAccounts(appAccountsResult)
+      Flexa.buildSpend()
+        .onTransactionRequest{ res ->
+          if (res.isSuccess) {
+            val transaction = res.getOrThrow()
+            onSuccessCB.invoke(transaction.toWritableMap())
+          } else {
+            onFailure?.invoke(res.exceptionOrNull())
+          }
+        }
+    }
+  }
+
+  @ReactMethod
+  fun updateAppAccounts(appAccounts: ReadableArray) {
+    val appAccountsResult = appAccounts.toAppAccounts()
+    Flexa.updateAppAccounts(appAccountsResult as ArrayList<AppAccount>)
+  }
+
   /**
    * Notifies Flexa for a specific transaction
    */
@@ -132,6 +155,11 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
     currentActivity?.let {
       Flexa.buildIdentity().open(it, urlString)
     }
+  }
+
+  @ReactMethod
+  fun dismissAllModals(cb: Callback) {
+    cb.invoke(true)
   }
 
   override fun getName(): String {

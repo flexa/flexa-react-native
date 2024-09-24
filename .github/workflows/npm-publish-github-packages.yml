@@ -38,7 +38,7 @@ jobs:
           git add $PACKAGE_NAME
           git commit -m "Release version ${VERSION}"
           git push origin "release-v${VERSION}"
-          gh release create "v${VERSION}" --title "Release ${VERSION}" --notes "Release notes for version ${VERSION}" "${PACKAGE_NAME}"
+          gh release create "${VERSION}" --title "Release ${VERSION}" --notes "Release notes for version ${VERSION}" "${PACKAGE_NAME}"
 
       - name: Publish private Github NPM package
         run: |
