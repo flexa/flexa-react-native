@@ -92,6 +92,7 @@ export default () => {
           symbol: 'ETH',
           displayName: 'Ether',
           balance: 0.5,
+          balanceAvailable: 0.5, // if different from the balance due to pending transactions etc.
           icon: undefined,
         },
         {

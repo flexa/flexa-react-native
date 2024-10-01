@@ -50,6 +50,11 @@ fun ReadableArray.toAppAccounts(): ArrayList<AppAccount> {
         null
       }
       val balance = rawAsset["balance"] as Double
+      val balanceAvailable = try {
+        rawAsset["balanceAvailable"] as Double
+      } catch (e: NullPointerException) {
+        null
+      }
       val icon = try {
         val i = rawAsset["icon"].toString()
         if (Patterns.WEB_URL.matcher(i).matches()) i else null
@@ -62,7 +67,17 @@ fun ReadableArray.toAppAccounts(): ArrayList<AppAccount> {
         null
       }
       val assetId = rawAsset["assetId"].toString()
-      assets.add(AvailableAsset(assetId, balance, icon, displayName, symbol, accentColor = null))
+      assets.add(
+        AvailableAsset(
+          assetId = assetId,
+          balance = balance,
+          balanceAvailable = balanceAvailable,
+          icon = icon,
+          displayName = displayName,
+          symbol = symbol,
+          accentColor = null
+        )
+      )
     }
     accounts.add(
       AppAccount(

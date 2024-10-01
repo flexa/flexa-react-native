@@ -150,9 +150,21 @@ class FlexaReactNative: NSObject {
             return nil
         }
 
+        let balanceAvailableDecimal: Decimal?
+        if let balanceAvailable = dictionary["balanceAvailable"] as? Double {
+            balanceAvailableDecimal = Decimal(balanceAvailable)
+        } else {
+            balanceAvailableDecimal = nil
+        }
+
         let icon = URL(string: (dictionary["icon"] as? String) ?? "")
 
-        return FXAvailableAsset(assetId: assetId ,symbol: symbol, balance: Decimal(balance), displayName: displayName, logoImageUrl: icon)
+        return FXAvailableAsset(assetId: assetId,
+                                symbol: symbol,
+                                balance: Decimal(balance),
+                                balanceAvailable: balanceAvailableDecimal,
+                                displayName: displayName,
+                                logoImageUrl: icon)
     }
 }
 

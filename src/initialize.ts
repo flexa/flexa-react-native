@@ -12,6 +12,7 @@ type AvailableAsset = {
   displayName: string;
   symbol: string;
   balance: number;
+  balanceAvailable?: number;
 };
 
 const defaultThemingData = {
@@ -105,7 +106,7 @@ export function payment(
 }
 
 /**
- * Initializes the Flexa module, please run this on the top layer of the app
+ * Initializes the Flexa SDK module, please run this on the top layer of the app
  *
  * @example
  *
@@ -189,7 +190,7 @@ export function dismissAllModals() {
 }
 
 /**
- * Updates the Flexa appAccounts with new availableAssets and balances
+ * Updates the Flexa SDK appAccounts with new availableAssets and balances
  * Pass an appAccounts array as a parameter
  *
  * @example

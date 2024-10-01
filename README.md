@@ -312,7 +312,14 @@ const manualPayment = async () => {
       accountId: '0x1..', // this can be a uuid or a sha256 of the wallet address
       custodyModel: CUSTODY_MODEL.LOCAL,
       availableAssets: [
-        { assetId: 'eip155:1/slip44:60', symbol: 'ETH', displayName: "Ether", balance: 0.5, icon: undefined },
+        {
+          assetId: 'eip155:1/slip44:60',
+          symbol: 'ETH',
+          displayName: "Ether",
+          balance: 0.5,
+          balanceAvailable: 0.5, // add it if different from the balance due to pending transactions etc.
+          icon: undefined
+        },
         { assetId: 'eip155:1/erc20:0xdac17f958d2ee523a2206206994597c13d831ec7', symbol: 'USDT', displayName: "USDT", balance: 200, icon: undefined },
         { assetId: 'eip155:1/erc20:0xff20817765cb7f73d4bde2e66e067e58d11095c2', symbol: 'AMP', displayName: "AMP", balance: 300, icon: undefined },
       ],

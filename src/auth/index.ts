@@ -15,7 +15,7 @@ interface ConnectResult {
 }
 
 /**
- * Gets the authentication state of the Flexa with Flexa.
+ * Gets the authentication state of the Flexa SDK.
  *
  * @returns{Promise<ConnectResult>} Promise object with a resolution
  *
