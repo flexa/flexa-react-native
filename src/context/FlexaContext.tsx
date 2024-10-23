@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { init, payment } from '../index';
-import type { AppAccount } from '../initialize';
+import {init, payment, useFlexaLinks} from '../index';
+import type { AssetAccount } from '../initialize';
 
 const FlexaContext = React.createContext({});
 
@@ -9,22 +9,23 @@ const FlexaContext = React.createContext({});
  *
  * It initializes the Flexa by providing the following parameters
  * @publishableKey {String} - publishableKey is required to communicate with the Flexa API
- * @appAccounts {AppAccounts[]} - Initiate the Flexa with preloaded appAccounts
+ * @assetAccounts {AssetAccounts[]} - Initiate the Flexa with preloaded assetAccounts
  * @webViewThemingData {object} - optional - custom styles and theming options for the webViews of the Flexa SDK
  */
 function FlexaContextProvider({
   publishableKey = '',
-  appAccounts = [],
+  assetAccounts = [],
   children = null,
   webViewThemingData,
 }: {
   publishableKey?: string;
-  appAccounts?: AppAccount[];
+  assetAccounts?: AssetAccount[];
   webViewThemingData?: object;
   children?: any;
 }) {
+  useFlexaLinks()
   useEffect(() => {
-    init(publishableKey, appAccounts, webViewThemingData);
+    init(publishableKey, assetAccounts, webViewThemingData);
   });
   return <FlexaContext.Provider value={{ payment }} children={children} />;
 }

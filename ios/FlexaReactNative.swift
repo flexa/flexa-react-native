@@ -7,22 +7,22 @@ class FlexaReactNative: NSObject {
     static var reactNativePaymentCallback: RCTResponseSenderBlock?
     static var reactNativePaymentCallbackReject: RCTResponseSenderBlock?
 
-    @objc func `init`(_ publishableKey: String, appAccounts: [[String : Any]], themingData: String) -> Void {
+    @objc func `init`(_ publishableKey: String, assetAccounts: [[String : Any]], themingData: String) -> Void {
         Flexa.initialize(
-            FXClient(publishableKey: publishableKey, appAccounts: self.buildAppAccountsArray(from: appAccounts), themingDataString: themingData)
+            FXClient(publishableKey: publishableKey, assetAccounts: self.buildAssetAccountsArray(from: assetAccounts), themingDataString: themingData)
         )
         NSLog("Flexa.initialize() invoked")
         return
     }
 
-    @objc func payment(_ appAccounts: [[String : Any]], callback: @escaping RCTResponseSenderBlock, reject: @escaping RCTResponseSenderBlock) -> Void {
+    @objc func payment(_ assetAccounts: [[String : Any]], callback: @escaping RCTResponseSenderBlock, reject: @escaping RCTResponseSenderBlock) -> Void {
 
         FlexaReactNative.reactNativePaymentCallback = callback
         FlexaReactNative.reactNativePaymentCallbackReject = reject
 
         DispatchQueue.main.async {
             Flexa.sections([.spend])
-                .appAccounts(self.buildAppAccountsArray(from: appAccounts))
+                .assetAccounts(self.buildAssetAccountsArray(from: assetAccounts))
                 .onTransactionRequest { result in
                     switch result {
                     case .success(let transaction):
@@ -37,16 +37,16 @@ class FlexaReactNative: NSObject {
         return
     }
 
-    @objc func updatePaymentCallback(_ appAccounts: [[String : Any]], callback: @escaping RCTResponseSenderBlock, reject: @escaping RCTResponseSenderBlock) -> Void {
+    @objc func updatePaymentCallback(_ assetAccounts: [[String : Any]], callback: @escaping RCTResponseSenderBlock, reject: @escaping RCTResponseSenderBlock) -> Void {
         FlexaReactNative.reactNativePaymentCallback = callback
         FlexaReactNative.reactNativePaymentCallbackReject = reject
         NSLog("Flexa.updatePaymentCallback() invoked")
         return
     }
 
-    @objc func updateAppAccounts(_ appAccounts: [[String : Any]]) -> Void {
-        Flexa.updateAppAccounts(self.buildAppAccountsArray(from: appAccounts))
-        NSLog("Flexa.updateAppAccounts() invoked")
+    @objc func updateAssetAccounts(_ assetAccounts: [[String : Any]]) -> Void {
+        Flexa.updateAssetAccounts(self.buildAssetAccountsArray(from: assetAccounts))
+        NSLog("Flexa.updateAssetAccounts() invoked")
         return
     }
 
@@ -116,21 +116,21 @@ class FlexaReactNative: NSObject {
         }
     }
 
-    private func buildAppAccountsArray(from appAccounts: [[String: Any]]) -> [FXAppAccount] {
-        appAccounts.compactMap(buildUserWallet)
+    private func buildAssetAccountsArray(from assetAccounts: [[String: Any]]) -> [FXAssetAccount] {
+        assetAccounts.compactMap(buildUserWallet)
     }
 
-    private func buildUserWallet(from dictionary: [String: Any]) -> FXAppAccount? {
+    private func buildUserWallet(from dictionary: [String: Any]) -> FXAssetAccount? {
         guard let availableAssets = dictionary["availableAssets"] as? [[String: Any]],
               let displayName = dictionary["displayName"] as? String,
-              let accountId = dictionary["accountId"] as? String,
+              let assetAccountHash = dictionary["assetAccountHash"] as? String,
               let custodyModelString = dictionary["custodyModel"] as? String,
-              let custodyModel = FXAppAccount.CustodyModel(rawValue: custodyModelString.lowercased()) else {
+              let custodyModel = FXAssetAccount.CustodyModel(rawValue: custodyModelString.lowercased()) else {
             return nil
         }
 
-        return FXAppAccount(
-            accountId: accountId,
+        return FXAssetAccount(
+            assetAccountHash: assetAccountHash,
             displayName: displayName,
             custodyModel: custodyModel,
             availableAssets: buildUserAssetsArray(from: availableAssets),

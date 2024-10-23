@@ -81,10 +81,10 @@ export default () => {
     console.log('manual payment: ', res);
   };
 
-  const appAccounts = [
+  const assetAccounts = [
     {
       displayName: 'Wallet 1',
-      accountId: '0x1..',
+      assetAccountHash: '0x1..',
       custodyModel: CUSTODY_MODEL.LOCAL,
       availableAssets: [
         {
@@ -113,7 +113,7 @@ export default () => {
     },
     {
       displayName: 'Wallet 2',
-      accountId: '0x2..',
+      assetAccountHash: '0x2..',
       custodyModel: 'LOCAL',
       availableAssets: [
         {
@@ -142,7 +142,7 @@ export default () => {
   ];
 
   const manualPayment = async () => {
-    await payment(appAccounts, payCB);
+    await payment(assetAccounts, payCB);
   };
 
   React.useEffect(() => {
@@ -169,7 +169,7 @@ export default () => {
           <Button title="Open Payments" onPress={() => manualPayment()} />
           <FlexaButton
             style={{ alignSelf: 'center' }}
-            appAccounts={appAccounts}
+            assetAccounts={assetAccounts}
             paymentCallback={payCB}
             borderRadius={8}
             width={72}

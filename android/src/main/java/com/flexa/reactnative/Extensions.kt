@@ -4,7 +4,7 @@ import android.util.Patterns
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableMap
-import com.flexa.core.shared.AppAccount
+import com.flexa.core.shared.AssetAccount
 import com.flexa.core.shared.AvailableAsset
 import com.flexa.core.shared.CustodyModel
 import com.flexa.spend.Transaction
@@ -12,7 +12,7 @@ import com.flexa.spend.Transaction
 fun Transaction.toWritableMap(): WritableMap = Arguments.createMap().apply {
   putString("commerceSessionId", commerceSessionId)
   putString("amount", amount)
-  putString("appAccountId", appAccountId)
+  putString("assetAccountHash", assetAccountHash)
   putString("assetId", assetId)
   putString("destinationAddress", destinationAddress)
   putString("feeAmount", feeAmount)
@@ -23,11 +23,11 @@ fun Transaction.toWritableMap(): WritableMap = Arguments.createMap().apply {
 }
 
 @Throws(ClassCastException::class, NullPointerException::class)
-fun ReadableArray.toAppAccounts(): ArrayList<AppAccount> {
-  val accounts = ArrayList<AppAccount>(this.size())
+fun ReadableArray.toAssetAccounts(): ArrayList<AssetAccount> {
+  val accounts = ArrayList<AssetAccount>(this.size())
   for (rawWallet in this.toArrayList()) {
     val wallet = rawWallet as HashMap<*, *>
-    val accountId = wallet["accountId"].toString()
+    val assetAccountHash = wallet["assetAccountHash"].toString()
     val cm = wallet["custodyModel"].toString()
     val custodyModel = CustodyModel.valueOf(cm.uppercase())
     val accountDisplayName = try {
@@ -80,8 +80,8 @@ fun ReadableArray.toAppAccounts(): ArrayList<AppAccount> {
       )
     }
     accounts.add(
-      AppAccount(
-        accountId = accountId,
+      AssetAccount(
+        assetAccountHash = assetAccountHash,
         custodyModel = custodyModel,
         displayName = accountDisplayName,
         icon = accountIcon,

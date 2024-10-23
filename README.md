@@ -185,7 +185,7 @@ import { init } from '@flexa/flexa-react-native';
 
 publishableKey = "publishable_test_xyz"
 
-init(publishableKey, appAccounts, webViewThemingData) // appAccounts and webViewThemingData are optional
+init(publishableKey, assetAccounts, webViewThemingData) // assetAccounts and webViewThemingData are optional
 
 ```
 or wrap the main App component with the SpendContextProvider component
@@ -193,7 +193,7 @@ or wrap the main App component with the SpendContextProvider component
 ```js
 <FlexaContext.FlexaContextProvider
   publishableKey={publishableKey}
-  appAccounts={appAccounts} //optional
+  assetAccounts={assetAccounts} //optional
   webViewThemingData={webViewThemingData} //optional
 >
   <App />
@@ -257,8 +257,16 @@ In your `android/app/src/main/AndroidManifest.xml` add the following intent-filt
 
 #### React Native
 
-In order to enable the processing of the universal links by the Flexa SDK, you would need to add the following functionality
-in the App.tsx or parent level Component
+The `<FlexaContext.FlexaContextProvider />` functionality includes deeplink processing by default
+
+In order to enable the processing of the universal links by the Flexa SDK, you would need to use the React hook provided by the SDK in the App.tsx or parent level Component.
+
+```js
+  const link = useFlexaLinks()
+```
+
+Or add the following functionality in the App.tsx or parent level Component.
+
 
 ```js
   useEffect(() => {
@@ -272,11 +280,12 @@ in the App.tsx or parent level Component
   }, []);
 ```
 
+
 ### Payments only View
 
 The following example shows how to open the Flexa SDK screen for the Flexa payments.
 
-The first argument in the payment() function is a list of appAccounts passed from the parent app.
+The first argument in the payment() function is a list of assetAccounts passed from the parent app.
 
 A callback is passed which will return a TransactionRequest object when the Flexa SDK Pay is clicked.
 
@@ -306,7 +315,7 @@ const paymentCallback = (transactionRequest: TransactionRequest) => {
 }
 
 const manualPayment = async () => {
-  const appAccounts = [
+  const assetAccounts = [
     {
       displayName: 'Wallet 1',
       accountId: '0x1..', // this can be a uuid or a sha256 of the wallet address
@@ -336,7 +345,7 @@ const manualPayment = async () => {
     },
   ];
 
-  await payment(appAccounts, paymentCallback);
+  await payment(assetAccounts, paymentCallback);
 };
 
 ```
@@ -345,7 +354,7 @@ You can also use the built-in FlexaButton component like the following code samp
 
 ```js
 <FlexaButton
-        appAccounts={appAccounts}
+        assetAccounts={assetAccounts}
         paymentCallback={paymentCallback}
         width={32}
         height={32}

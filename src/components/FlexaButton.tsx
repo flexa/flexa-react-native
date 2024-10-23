@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { TouchableOpacity, Image, StyleSheet, ViewStyle } from 'react-native';
 import { payment } from '../index';
-import type { AppAccount } from '../initialize';
+import type { AssetAccount } from '../initialize';
 
 type FlexaButtonProps = {
-  appAccounts: AppAccount[];
+  assetAccounts: AssetAccount[];
   paymentCallback: Function;
   customAuth?: Function;
   width?: number;
@@ -13,7 +13,7 @@ type FlexaButtonProps = {
   style?: ViewStyle;
 };
 const FlexaButton = ({
-  appAccounts,
+  assetAccounts,
   paymentCallback,
   customAuth,
   width = 64,
@@ -23,7 +23,7 @@ const FlexaButton = ({
 }: FlexaButtonProps) => {
   const handleClick = async () => {
     customAuth && (await customAuth());
-    await payment(appAccounts, paymentCallback);
+    await payment(assetAccounts, paymentCallback);
   };
   return (
     <TouchableOpacity

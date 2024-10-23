@@ -33,8 +33,8 @@ export enum CUSTODY_MODEL {
 
 type CustodyModelType = CUSTODY_MODEL.LOCAL | CUSTODY_MODEL.MANAGED | string;
 
-export type AppAccount = {
-  accountId: string;
+export type AssetAccount = {
+  assetAccountHash: string;
   displayName: string;
   custodyModel: CustodyModelType;
   icon?: string;
@@ -49,7 +49,7 @@ type Transaction = {
   feePrice: string;
   size: string;
   assetId: string;
-  accountId: string;
+  assetAccountHash: string;
 };
 
 export type TransactionRequest = {
@@ -71,17 +71,17 @@ export const getNativeFlexaModule = () =>
 
 /**
  * Opens the Flexa for Flexa Payments
- * Pass an appAccounts array as a parameter and a payment callback function
+ * Pass an assetAccounts array as a parameter and a payment callback function
  *
  * @example
  * try {
- *   await payment(appAccounts, onPaymentCallback)
+ *   await payment(assetAccounts, onPaymentCallback)
  * } catch (e) {
  *   console.error(e)
  * }
  */
 export function payment(
-  appAccounts: AppAccount[],
+  assetAccounts: AssetAccount[],
   onPaymentCallback: Function
 ): Promise<object> {
   return new Promise((resolve) => {
@@ -94,10 +94,10 @@ export function payment(
             txSignature
           ),
       });
-      getNativeFlexaModule().updatePaymentCallback(appAccounts, transactionRequest, onPaymentCallback)
+      getNativeFlexaModule().updatePaymentCallback(assetAccounts, transactionRequest, onPaymentCallback)
     }
     getNativeFlexaModule().payment(
-      appAccounts,
+      assetAccounts,
       transactionRequest,
       onPaymentCallback
     );
@@ -112,14 +112,14 @@ export function payment(
  *
  * init(
  *  publishableKey: string,
- *  appAccounts: AppAccount[],
+ *  assetAccounts: AssetAccount[],
  *  webViewThemingData: object
  * )
  *
  */
 export function init(
   publishableKey: string,
-  appAccounts: AppAccount[] = [],
+  assetAccounts: AssetAccount[] = [],
   webViewThemingData?: object
 ): void {
   const themingDataString = JSON.stringify(
@@ -132,14 +132,14 @@ export function init(
       };
       getNativeFlexaModule().init(
         publishableKey,
-        appAccounts,
+        assetAccounts,
         JSON.stringify(iosThemingData)
       );
     },
     android: () => {
       getNativeFlexaModule().init(
         publishableKey,
-        appAccounts,
+        assetAccounts,
         themingDataString
       );
     },
@@ -190,28 +190,28 @@ export function dismissAllModals() {
 }
 
 /**
- * Updates the Flexa SDK appAccounts with new availableAssets and balances
- * Pass an appAccounts array as a parameter
+ * Updates the Flexa SDK assetAccounts with new availableAssets and balances
+ * Pass an assetAccounts array as a parameter
  *
  * @example
  * try {
- *   updateAppAccounts(appAccounts)
+ *   updateAssetAccounts(assetAccounts)
  * } catch (e) {
  *   console.error(e)
  * }
  */
-export function updateAppAccounts(
-  appAccounts: AppAccount[],
+export function updateAssetAccounts(
+  assetAccounts: AssetAccount[],
 ): void {
   const fn = Platform.select({
     ios: () => {
-      getNativeFlexaModule().updateAppAccounts(
-        appAccounts,
+      getNativeFlexaModule().updateAssetAccounts(
+        assetAccounts,
       );
     },
     android: () => {
-      getNativeFlexaModule().updateAppAccounts(
-        appAccounts,
+      getNativeFlexaModule().updateAssetAccounts(
+        assetAccounts,
       );
     },
   });

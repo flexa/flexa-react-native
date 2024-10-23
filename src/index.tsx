@@ -6,10 +6,11 @@ import {
   CUSTODY_MODEL,
   TransactionRequest,
   dismissAllModals,
-  updateAppAccounts,
+  updateAssetAccounts,
 } from './initialize';
 import FlexaButton from './components/FlexaButton';
 import { getLoginState, logout } from './auth';
+import useFlexaLinks from './hooks/useFlexaLinks';
 
 export {
   init,
@@ -22,5 +23,6 @@ export {
   CUSTODY_MODEL,
   TransactionRequest,
   dismissAllModals,
-  updateAppAccounts,
+  updateAssetAccounts,
+  useFlexaLinks
 };

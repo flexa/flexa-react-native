@@ -10,7 +10,7 @@ describe('FlexaButton tests', () => {
     Flexa.payment = paymentSpy;
     const paymentCallback = () => null
     const result = render(
-      <FlexaButton appAccounts={[]} paymentCallback={paymentCallback} />
+      <FlexaButton assetAccounts={[]} paymentCallback={paymentCallback} />
     );
 
     expect(result).toMatchSnapshot();
@@ -22,7 +22,7 @@ describe('FlexaButton tests', () => {
     Flexa.payment = paymentSpy;
     const paymentCallback = () => null
     const result = render(
-      <FlexaButton appAccounts={[]} paymentCallback={paymentCallback} />
+      <FlexaButton assetAccounts={[]} paymentCallback={paymentCallback} />
     );
 
     fireEvent(result.getByTestId('FlexaButtonTouchableOpacity'), 'press');

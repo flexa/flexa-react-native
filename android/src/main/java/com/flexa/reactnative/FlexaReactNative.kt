@@ -6,7 +6,7 @@ import com.facebook.react.bridge.*
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.flexa.core.Flexa
-import com.flexa.core.shared.AppAccount
+import com.flexa.core.shared.AssetAccount
 import com.flexa.core.shared.FlexaClientConfiguration
 import com.flexa.core.theme.FlexaTheme
 import com.flexa.core.theme.SpendColorScheme
@@ -26,7 +26,7 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
    * Initializes the Flexa SDK
    */
   @ReactMethod
-  fun init(publishableKey: String, appAccounts: ReadableArray, themingData: String) {
+  fun init(publishableKey: String, assetAccounts: ReadableArray, themingData: String) {
     val adapter = ThemeAdapter()
     val themeData = adapter.stringToThemeData(themingData)
     val lightBackground = adapter.getColor(themeData?.android?.light?.backgroundColor)
@@ -45,7 +45,7 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
       onPrimary = darkCard?: Color(0xFF575757)
     )
 
-    val appAccountsResult = appAccounts.toAppAccounts()
+    val assetAccountsResult = assetAccounts.toAssetAccounts()
 
     Flexa.init(
       FlexaClientConfiguration(
@@ -56,7 +56,7 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
           lightColorsScheme = lightColorScheme,
           darkColorsScheme = darkColorScheme
         ),
-        appAccounts = appAccountsResult as ArrayList<AppAccount>
+        assetAccounts = assetAccountsResult as ArrayList<AssetAccount>
       )
     )
   }
@@ -97,10 +97,10 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
    * Starts Payment in Flexa
    */
   @ReactMethod
-  fun payment(appAccounts: ReadableArray, onSuccessCB: Callback, onFailure: Callback?) {
+  fun payment(assetAccounts: ReadableArray, onSuccessCB: Callback, onFailure: Callback?) {
     currentActivity?.let { activity ->
-      val appAccountsResult = appAccounts.toAppAccounts()
-      Flexa.updateAppAccounts(appAccountsResult)
+      val assetAccountsResult = assetAccounts.toAssetAccounts()
+      Flexa.updateAssetAccounts(assetAccountsResult)
       Flexa.buildSpend()
         .onTransactionRequest{ res ->
           if (res.isSuccess) {
@@ -115,10 +115,10 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun updatePaymentCallback(appAccounts: ReadableArray, onSuccessCB: Callback, onFailure: Callback?) {
+  fun updatePaymentCallback(assetAccounts: ReadableArray, onSuccessCB: Callback, onFailure: Callback?) {
     currentActivity?.let { activity ->
-      val appAccountsResult = appAccounts.toAppAccounts()
-      Flexa.updateAppAccounts(appAccountsResult)
+      val assetAccountsResult = assetAccounts.toAssetAccounts()
+      Flexa.updateAssetAccounts(assetAccountsResult)
       Flexa.buildSpend()
         .onTransactionRequest{ res ->
           if (res.isSuccess) {
@@ -132,9 +132,9 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun updateAppAccounts(appAccounts: ReadableArray) {
-    val appAccountsResult = appAccounts.toAppAccounts()
-    Flexa.updateAppAccounts(appAccountsResult as ArrayList<AppAccount>)
+  fun updateAssetAccounts(assetAccounts: ReadableArray) {
+    val assetAccountsResult = assetAccounts.toAssetAccounts()
+    Flexa.updateAssetAccounts(assetAccountsResult as ArrayList<AssetAccount>)
   }
 
   /**
