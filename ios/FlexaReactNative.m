@@ -10,6 +10,7 @@ RCT_EXTERN_METHOD(logout: (RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(getLoginState: (RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(processUniversalLink: (NSString *)url callback:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(transactionSent: (NSString *)sessionId signature: (NSString *)signature)
+RCT_EXTERN_METHOD(transactionFailed: (NSString *)sessionId)
 RCT_EXTERN_METHOD(dismissAllModals: (RCTResponseSenderBlock)callback)
 
 + (BOOL)requiresMainQueueSetup

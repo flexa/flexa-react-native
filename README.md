@@ -295,7 +295,7 @@ import { payment, TransactionRequest } from '@flexa/flexa-react-native';
 
 const paymentCallback = (transactionRequest: TransactionRequest) => {
   //execute the transaction depending on parent app logic here
-  const {transaction, transactionSent } = transactionRequest;
+  const {transaction, transactionSent, transactionFailed } = transactionRequest;
 
   /* transaction contains
     destinationAddress: string; eip155:1:0x123... destination address for payment
@@ -311,6 +311,9 @@ const paymentCallback = (transactionRequest: TransactionRequest) => {
 
   // This helps Flexa confirm the transaction quickly for self-custody wallets. It is a callback sent back to the SDK with the transaction signature i.e hash
   transactionSent(TX_SIGNATURE)
+
+  // Or call transactionFailed to close the commerce session initiated in the Flexa SDK
+  transactionFailed();
 
 }
 
@@ -338,7 +341,7 @@ const manualPayment = async () => {
       accountId: '0x2..',
       custodyModel: 'LOCAL', // this can be LOCAL or MANAGED depending on the wallet type (self custody, or custodial)
       availableAssets: [
-        { assetId: 'eip155:1/slip44:60', symbol: 'ETH', displayName: "Ether", balance: 0.25, icon: undefined },
+        { assetId: 'eip155:1/slip44:60', symbol: 'ETH', displayName: "Ether", balance: 0.25, icon: "https://cdn.myweb/ethLogoURL.png" },
         { assetId: 'eip155:1/erc20:0x6b175474e89094c44da98b954eedeac495271d0f', symbol: 'DAI', displayName: "DAI", balance: 120, icon: undefined },
         { assetId: 'eip155:1/erc20:0x0d8775f648430679a709e98d2b0cb6250d2887ef', symbol: 'BAT', displayName: "BAT", balance: 4000, icon: undefined },
       ],

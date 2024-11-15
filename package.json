@@ -1,6 +1,6 @@
 {
   "name": "@flexa/flexa-react-native",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Flexa Components",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -49,7 +49,7 @@
     "@babel/eslint-parser": "^7.25.1",
     "@commitlint/config-conventional": "^17.0.2",
     "@react-native-community/eslint-config": "^3.0.2",
-    "@release-it/conventional-changelog": "^5.0.0",
+    "@release-it/conventional-changelog": "^9.0.1",
     "@testing-library/react-native": "10.1.1",
     "react-test-renderer": "17.0.2",
     "@types/jest": "^28.1.2",
@@ -65,7 +65,7 @@
     "react": "^17.0.2",
     "react-native": "^0.70.15",
     "react-native-builder-bob": "^0.18.3",
-    "release-it": "^15.0.0",
+    "release-it": "^17.10.0",
     "typescript": "^4.5.2"
   },
   "resolutions": {

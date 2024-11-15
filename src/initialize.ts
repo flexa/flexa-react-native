@@ -55,6 +55,7 @@ type Transaction = {
 export type TransactionRequest = {
   transaction: Transaction;
   transactionSent: Function;
+  transactionFailed: Function;
 };
 
 export const getNativeFlexaModule = () =>
@@ -85,6 +86,9 @@ export function payment(
   onPaymentCallback: Function
 ): Promise<object> {
   return new Promise((resolve) => {
+    const failureCallback = () => {
+      getNativeFlexaModule().updatePaymentCallback(assetAccounts, transactionRequest, failureCallback)
+    };
     const transactionRequest = async (transaction: Transaction) => {
       await onPaymentCallback({
         transaction,
@@ -93,13 +97,15 @@ export function payment(
             transaction.commerceSessionId,
             txSignature
           ),
+        transactionFailed: () =>
+          getNativeFlexaModule().transactionFailed(transaction.commerceSessionId),
       });
-      getNativeFlexaModule().updatePaymentCallback(assetAccounts, transactionRequest, onPaymentCallback)
+      getNativeFlexaModule().updatePaymentCallback(assetAccounts, transactionRequest, failureCallback)
     }
     getNativeFlexaModule().payment(
       assetAccounts,
       transactionRequest,
-      onPaymentCallback
+      failureCallback
     );
     resolve({});
   });

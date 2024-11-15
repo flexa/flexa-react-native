@@ -67,3 +67,5 @@ android/keystores/debug.keystore
 lib/
 
 builds/
+
+.xcode.env*

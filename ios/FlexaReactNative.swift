@@ -97,6 +97,10 @@ class FlexaReactNative: NSObject {
         Flexa.transactionSent(commerceSessionId: sessionId, signature: signature)
     }
 
+    @objc func transactionFailed(_ sessionId: String) {
+        Flexa.onTransactionFailed(commerceSessionId: sessionId)
+    }
+
     private func handleLoginStateResult(result: ConnectResult, callback: @escaping RCTResponseSenderBlock) {
         DispatchQueue.main.async {
             var response: [String: Any] = [:]
@@ -157,14 +161,25 @@ class FlexaReactNative: NSObject {
             balanceAvailableDecimal = nil
         }
 
-        let icon = URL(string: (dictionary["icon"] as? String) ?? "")
-
-        return FXAvailableAsset(assetId: assetId,
-                                symbol: symbol,
-                                balance: Decimal(balance),
-                                balanceAvailable: balanceAvailableDecimal,
-                                displayName: displayName,
-                                logoImageUrl: icon)
+        if let icon = URL(string: (dictionary["icon"] as? String) ?? "") {
+          return FXAvailableAsset(
+            assetId: assetId,
+            symbol: symbol,
+            balance: Decimal(balance),
+            balanceAvailable: balanceAvailableDecimal,
+            displayName: displayName,
+            logoImageUrl: icon
+          )
+        } else {
+          return FXAvailableAsset(
+            assetId: assetId,
+            symbol: symbol,
+            balance: Decimal(balance),
+            balanceAvailable: balanceAvailableDecimal,
+            icon: Bundle.applicationIcon!,
+            displayName: displayName
+          )
+        }
     }
 }
 

@@ -107,7 +107,7 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
             val transaction = res.getOrThrow()
             onSuccessCB.invoke(transaction.toWritableMap())
           } else {
-            onFailure?.invoke(res.exceptionOrNull())
+            onFailure?.invoke(null)
           }
         }
         .open(activity)
@@ -125,7 +125,7 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
             val transaction = res.getOrThrow()
             onSuccessCB.invoke(transaction.toWritableMap())
           } else {
-            onFailure?.invoke(res.exceptionOrNull())
+            onFailure?.invoke(null)
           }
         }
     }
@@ -138,7 +138,7 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
   }
 
   /**
-   * Notifies Flexa for a specific transaction
+   * Notifies Flexa for a specific transaction success
    */
   @ReactMethod
   fun transactionSent(
@@ -147,6 +147,14 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
   ) {
     Flexa.buildSpend().transactionSent(commerceSessionId, txSignature)
   }
+
+    /**
+     * Notifies Flexa for a transaction error
+     */
+    @ReactMethod
+    fun transactionFailed(commerceSessionId: String) {
+      Flexa.buildSpend().transactionFailed(commerceSessionId)
+    }
 
   @ReactMethod
   fun processUniversalLink(
