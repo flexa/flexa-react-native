@@ -161,6 +161,10 @@ class FlexaReactNative: NSObject {
             balanceAvailableDecimal = nil
         }
 
+        let bundlePath = Bundle(for: FlexaReactNative.self).path(forResource: "FlexaResources", ofType: "bundle")
+        let bundle = Bundle(path: bundlePath!)
+        let image = UIImage(named: "flexaLogo", in: bundle, compatibleWith: nil)
+
         if let icon = URL(string: (dictionary["icon"] as? String) ?? "") {
           return FXAvailableAsset(
             assetId: assetId,
@@ -176,7 +180,7 @@ class FlexaReactNative: NSObject {
             symbol: symbol,
             balance: Decimal(balance),
             balanceAvailable: balanceAvailableDecimal,
-            icon: Bundle.applicationIcon!,
+            icon: image!,
             displayName: displayName
           )
         }
