@@ -98,7 +98,7 @@ class FlexaReactNative: NSObject {
     }
 
     @objc func transactionFailed(_ sessionId: String) {
-        Flexa.onTransactionFailed(commerceSessionId: sessionId)
+        Flexa.transactionFailed(commerceSessionId: sessionId)
     }
 
     private func handleLoginStateResult(result: ConnectResult, callback: @escaping RCTResponseSenderBlock) {
