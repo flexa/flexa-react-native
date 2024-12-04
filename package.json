@@ -1,6 +1,6 @@
 {
-  "name": "@flexa/flexa-react-native",
-  "version": "1.0.8",
+  "name": "@flexahq/flexa-react-native",
+  "version": "1.0.9",
   "description": "Flexa Components",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

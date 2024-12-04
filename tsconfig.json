@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@flexa/flexa-react-native": ["./src/index"]
+      "@flexahq/flexa-react-native": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

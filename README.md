@@ -145,25 +145,25 @@ To install the private developer GitHub package registry you would need to downl
 store it in a local directory and run the following command:
 
 ```sh
-yarn add @flexa/flexa-react-native@"./<localdir>/<flexa-flexa-react-native-<version>.tgz"
+yarn add @flexahq/flexa-react-native@"./<localdir>/<flexa-flexa-react-native-<version>.tgz"
 ```
 
 or with a GitHub personal access token (classic)
 
 ```sh
-npm config set "@flexa:registry" "https://npm.pkg.github.com/" && \
+npm config set "@flexahq:registry" "https://npm.pkg.github.com/" && \
 npm config set "//npm.pkg.github.com/:_authToken" "YOUR_AUTH_TOKEN" && \
-yarn add @flexa/flexa-react-native
+yarn add @flexahq/flexa-react-native
 ```
 
 When published on NPM, the package will be available to install:
 
 ```sh
-npm install @flexa/flexa-react-native
+npm install @flexahq/flexa-react-native
 ```
 or
 ```sh
-yarn add @flexa/flexa-react-native
+yarn add @flexahq/flexa-react-native
 ```
 
 and finally install the pods for the ios platform
@@ -181,7 +181,7 @@ Execute the following SDK init function on the top level parent component of you
 You can obtain a publishableKey for the app integration from Flexa.
 
 ```js
-import { init } from '@flexa/flexa-react-native';
+import { init } from '@flexahq/flexa-react-native';
 
 publishableKey = "publishable_test_xyz"
 
@@ -291,7 +291,7 @@ A callback is passed which will return a TransactionRequest object when the Flex
 
 
 ```js
-import { payment, TransactionRequest } from '@flexa/flexa-react-native';
+import { payment, TransactionRequest } from '@flexahq/flexa-react-native';
 
 const paymentCallback = (transactionRequest: TransactionRequest) => {
   //execute the transaction depending on parent app logic here

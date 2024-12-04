@@ -1,6 +1,6 @@
 {
-  "name": "@flexa/flexa-react-native-example",
-  "description": "Example app for @flexa/flexa-react-native",
+  "name": "@flexahq/flexa-react-native-example",
+  "description": "Example app for @flexahq/flexa-react-native",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,10 +10,10 @@
     "pods": "pod-install --quiet",
     "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "build:ios": "react-native bundle --dev false --entry-file index.js --bundle-output ios/main.jsbundle --platform ios",
-    "postinstall": "patch-package && rm -rf ./node_modules/@flexa/flexa-react-native/node_modules/react && rm -rf ./node_modules/@flexa/flexa-react-native/node_modules/react-native && rm -rf ./node_modules/@flexa/flexa-react-native/example"
+    "postinstall": "patch-package && rm -rf ./node_modules/@flexahq/flexa-react-native/node_modules/react && rm -rf ./node_modules/@flexahq/flexa-react-native/node_modules/react-native && rm -rf ./node_modules/@flexahq/flexa-react-native/example"
   },
   "dependencies": {
-    "@flexa/flexa-react-native": "../",
+    "@flexahq/flexa-react-native": "../",
     "react": "18.2.0",
     "react-native": "0.72.7"
   },

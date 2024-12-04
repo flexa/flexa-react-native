@@ -999,7 +999,7 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@flexa/flexa-react-native@../":
+"@flexahq/flexa-react-native@../":
   version "1.0.5"
 
 "@hapi/hoek@^9.0.0":
