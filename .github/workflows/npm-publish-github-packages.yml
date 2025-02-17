@@ -1,45 +1,26 @@
-name: NPM Release package
+name: Publish Package to npmjs
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      packages: write
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Assuming you're using the same token for both
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Git
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-
+      # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          registry-url: https://npm.pkg.github.com/
+          registry-url: 'https://registry.npmjs.org'
 
-      - run: yarn install
+      - run: npm ci
 
-      - name: Run custom publish script
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          git checkout -b "release-v${VERSION}"
-          PACKAGE_NAME=$(npm pack --quiet | awk '{for(i=1;i<=NF;i++) if($i ~ /\.tgz$/) word=$i} END {print word}')
-          echo "ADDED PACKAGE"
-          echo $PACKAGE_NAME
-          git add $PACKAGE_NAME
-          git commit -m "Release version ${VERSION}"
-          git push origin "release-v${VERSION}"
-          gh release create "${VERSION}" --title "Release ${VERSION}" --notes "Release notes for version ${VERSION}" "${PACKAGE_NAME}"
-
-      - name: Publish private Github NPM package
-        run: |
-          npm publish
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

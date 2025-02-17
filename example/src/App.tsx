@@ -9,7 +9,7 @@ import {
   processUniversalLink,
   CUSTODY_MODEL,
   TransactionRequest,
-} from '@flexahq/flexa-react-native';
+} from '@flexa/flexa-react-native';
 
 const WEBVIEW_THEME = {
   android: {

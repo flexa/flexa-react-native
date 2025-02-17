@@ -145,25 +145,25 @@ To install the private developer GitHub package registry you would need to downl
 store it in a local directory and run the following command:
 
 ```sh
-yarn add @flexahq/flexa-react-native@"./<localdir>/<flexa-flexa-react-native-<version>.tgz"
+yarn add @flexa/flexa-react-native@"./<localdir>/<flexa-flexa-react-native-<version>.tgz"
 ```
 
 or with a GitHub personal access token (classic)
 
 ```sh
-npm config set "@flexahq:registry" "https://npm.pkg.github.com/" && \
+npm config set "@flexa:registry" "https://npm.pkg.github.com/" && \
 npm config set "//npm.pkg.github.com/:_authToken" "YOUR_AUTH_TOKEN" && \
-yarn add @flexahq/flexa-react-native
+yarn add @flexa/flexa-react-native
 ```
 
 When published on NPM, the package will be available to install:
 
 ```sh
-npm install @flexahq/flexa-react-native
+npm install @flexa/flexa-react-native
 ```
 or
 ```sh
-yarn add @flexahq/flexa-react-native
+yarn add @flexa/flexa-react-native
 ```
 
 and finally install the pods for the ios platform
@@ -181,7 +181,7 @@ Execute the following SDK init function on the top level parent component of you
 You can obtain a publishableKey for the app integration from Flexa.
 
 ```js
-import { init } from '@flexahq/flexa-react-native';
+import { init } from '@flexa/flexa-react-native';
 
 publishableKey = "publishable_test_xyz"
 
@@ -291,7 +291,7 @@ A callback is passed which will return a TransactionRequest object when the Flex
 
 
 ```js
-import { payment, TransactionRequest } from '@flexahq/flexa-react-native';
+import { payment, TransactionRequest } from '@flexa/flexa-react-native';
 
 const paymentCallback = (transactionRequest: TransactionRequest) => {
   //execute the transaction depending on parent app logic here
@@ -304,7 +304,7 @@ const paymentCallback = (transactionRequest: TransactionRequest) => {
     feePrice: string; the fee price in decimals string representation
     size: string; // transaction size bigint (i.e. gasLimit)
     assetId: string; // assetId CAIP19 notation of the asset that is to be sent
-    accountId: string; // which accountId was used for the payment (i.e which wallet to send from)
+    assetAccountHash: string; // which assetAccountHash was used for the payment (i.e which wallet to send from)
   */
 
   const TX_SIGNATURE = yourTransactionSendFunction({ ...transaction })
@@ -321,7 +321,7 @@ const manualPayment = async () => {
   const assetAccounts = [
     {
       displayName: 'Wallet 1',
-      accountId: '0x1..', // this can be a uuid or a sha256 of the wallet address
+      assetAccountHash: '0x1..', // this is the sha256 of the wallet address
       custodyModel: CUSTODY_MODEL.LOCAL,
       availableAssets: [
         {
@@ -338,7 +338,7 @@ const manualPayment = async () => {
     },
     {
       displayName: 'Wallet 2',
-      accountId: '0x2..',
+      assetAccountHash: '0x2..',
       custodyModel: 'LOCAL', // this can be LOCAL or MANAGED depending on the wallet type (self custody, or custodial)
       availableAssets: [
         { assetId: 'eip155:1/slip44:60', symbol: 'ETH', displayName: "Ether", balance: 0.25, icon: "https://cdn.myweb/ethLogoURL.png" },
