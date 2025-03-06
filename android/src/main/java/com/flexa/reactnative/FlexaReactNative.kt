@@ -1,7 +1,9 @@
 package com.flexa.reactnative
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import com.facebook.react.ReactActivity
 import com.facebook.react.bridge.*
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -167,7 +169,19 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun dismissAllModals(cb: Callback) {
-    cb.invoke(true)
+    currentActivity?.let { activity ->
+      if (activity is ReactActivity) {
+        activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
+          override fun onDestroy(owner: LifecycleOwner) {
+            cb.invoke()
+          }
+        })
+        activity.finish()
+      } else {
+        activity.finish()
+        cb.invoke(true)
+      }
+    }
   }
 
   override fun getName(): String {

@@ -80,15 +80,8 @@ class FlexaReactNative: NSObject {
 
     @objc
     func dismissAllModals(_ callback: @escaping RCTResponseSenderBlock) {
-        DispatchQueue.main.sync {
-            UIApplication
-                .shared
-                .connectedScenes
-                .compactMap { ($0 as? UIWindowScene)?.keyWindow }
-                .last?.rootViewController?.dismiss(animated: true) {
-                    callback([true])
-                }
-
+        Flexa.close(false) {
+            callback([true])
         }
     }
 

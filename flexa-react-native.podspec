@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   }
 
   s.dependency "React-Core"
-  s.dependency "Flexa", "~> 1.0.9"
+  s.dependency "Flexa", "~> 1.0.10"
 
   # Don't install the dependencies when we run `pod install` in the old architecture.
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
