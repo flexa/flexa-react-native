@@ -175,9 +175,9 @@ export function dismissAllModals() {
         try {
           getNativeFlexaModule().dismissAllModals((result: any) => {
             resolve(result);
-          })
+          });
         } catch (e) {
-          reject(e)
+          reject(e);
         }
       }),
     android: () =>
@@ -185,11 +185,11 @@ export function dismissAllModals() {
         try {
           getNativeFlexaModule().dismissAllModals((result: any) => {
             resolve(result);
-          })
+          });
         } catch (e) {
-          reject(e)
+          reject(e);
         }
-      })
+      }),
   });
 
   return fn?.();

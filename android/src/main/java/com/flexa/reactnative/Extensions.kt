@@ -7,7 +7,7 @@ import com.facebook.react.bridge.WritableMap
 import com.flexa.core.shared.AssetAccount
 import com.flexa.core.shared.AvailableAsset
 import com.flexa.core.shared.CustodyModel
-import com.flexa.spend.Transaction
+import com.flexa.core.shared.Transaction
 
 fun Transaction.toWritableMap(): WritableMap = Arguments.createMap().apply {
   putString("commerceSessionId", commerceSessionId)

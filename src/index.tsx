@@ -21,8 +21,9 @@ export {
   FlexaButton,
   processUniversalLink,
   CUSTODY_MODEL,
-  TransactionRequest,
   dismissAllModals,
   updateAssetAccounts,
-  useFlexaLinks
+  useFlexaLinks,
 };
+
+export type { TransactionRequest };

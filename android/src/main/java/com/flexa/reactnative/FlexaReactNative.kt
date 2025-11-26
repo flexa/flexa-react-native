@@ -14,8 +14,8 @@ import com.flexa.core.theme.FlexaTheme
 import com.flexa.core.theme.SpendColorScheme
 import com.flexa.identity.buildIdentity
 import com.flexa.identity.shared.ConnectResult
-import com.flexa.spend.*
 import com.flexa.reactnative.theme.ThemeAdapter
+import com.flexa.spend.*
 
 
 @ReactModule(name = "FlexaReactNative")
@@ -100,7 +100,7 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
    */
   @ReactMethod
   fun payment(assetAccounts: ReadableArray, onSuccessCB: Callback, onFailure: Callback?) {
-    currentActivity?.let { activity ->
+    reactApplicationContext.currentActivity?.let { activity ->
       val assetAccountsResult = assetAccounts.toAssetAccounts()
       Flexa.updateAssetAccounts(assetAccountsResult)
       Flexa.buildSpend()
@@ -118,7 +118,7 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun updatePaymentCallback(assetAccounts: ReadableArray, onSuccessCB: Callback, onFailure: Callback?) {
-    currentActivity?.let { activity ->
+    reactApplicationContext.currentActivity?.let { activity ->
       val assetAccountsResult = assetAccounts.toAssetAccounts()
       Flexa.updateAssetAccounts(assetAccountsResult)
       Flexa.buildSpend()
@@ -162,14 +162,14 @@ class FlexaReactNative(private val reactContext: ReactApplicationContext) :
   fun processUniversalLink(
     urlString: String,
   ) {
-    currentActivity?.let {
+    reactApplicationContext.currentActivity?.let {
       Flexa.buildIdentity().open(it, urlString)
     }
   }
 
   @ReactMethod
   fun dismissAllModals(cb: Callback) {
-    currentActivity?.let { activity ->
+    reactApplicationContext.currentActivity?.let { activity ->
       if (activity is ReactActivity) {
         activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
           override fun onDestroy(owner: LifecycleOwner) {

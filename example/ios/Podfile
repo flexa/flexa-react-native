@@ -1,18 +1,23 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
 
-platform :ios, '15.0'
-install! 'cocoapods', :deterministic_uuids => false
+
+platform :ios, '16.0'
+prepare_react_native_project!
 
 ENV['RCT_NEW_ARCH_ENABLED'] = '0'
 
 source 'https://cdn.cocoapods.org/'
-source 'git@github.com:flexa/flexa-cocoapods.git'
 
 use_frameworks! :linkage => :static
 
 target 'FlexaReactNativeExample' do
   config = use_native_modules!
+  use_modular_headers!
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -20,7 +25,7 @@ target 'FlexaReactNativeExample' do
   use_react_native!(
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
-    :hermes_enabled => false,
+    :hermes_enabled => true,
     :fabric_enabled => flags[:fabric_enabled],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
@@ -33,7 +38,41 @@ target 'FlexaReactNativeExample' do
   #use_flipper!()
 
   post_install do |installer|
-    react_native_post_install(installer)
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    react_native_post_install(
+      installer,
+      # Set `mac_catalyst_enabled` to `true` in order to apply patches
+      # necessary for Mac Catalyst builds
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false
+    )
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+            config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
+        end
+    end
+
+    # Modify RCT-Folly Portability.h to disable coroutines
+    Dir.glob(installer.sandbox.root + "RCT-Folly/folly/Portability.h") do |file|
+    begin
+      # First try to make the file writable
+      system "chmod +w #{file}"
+      
+      contents = File.read(file)
+      modified_contents = contents.gsub(/#define FOLLY_HAS_COROUTINES 1/, '#define FOLLY_HAS_COROUTINES 0')
+      
+      # Try writing with elevated privileges if needed
+      if !File.writable?(file)
+        system "sudo chmod +w #{file}"
+      end
+      
+      File.write(file, modified_contents)
+      
+      # Optionally restore original permissions
+      system "chmod -w #{file}"
+    rescue => e
+      Pod::UI.warn "Failed to modify Portability.h: #{e.message}"
+    end
+  end
   end
 end

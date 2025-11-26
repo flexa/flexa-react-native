@@ -8,21 +8,31 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "pods": "pod-install --quiet",
-    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
-    "build:ios": "react-native bundle --dev false --entry-file index.js --bundle-output ios/main.jsbundle --platform ios",
-    "postinstall": "patch-package && rm -rf ./node_modules/@flexa/flexa-react-native/node_modules/react && rm -rf ./node_modules/@flexa/flexa-react-native/node_modules/react-native && rm -rf ./node_modules/@flexa/flexa-react-native/example"
+    "build:android": "react-native build-android --extra-params \"--no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a\"",
+    "build:ios": "react-native build-ios --mode Debug"
   },
   "dependencies": {
     "@flexa/flexa-react-native": "../",
-    "react": "18.2.0",
-    "react-native": "0.72.7"
+    "@react-native/new-app-screen": "0.81.1",
+    "react": "19.1.0",
+    "react-native": "0.81.1",
+    "react-native-safe-area-context": "^5.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.3",
-    "@babel/runtime": "^7.23.3",
-    "babel-plugin-module-resolver": "^4.1.0",
-    "metro-react-native-babel-preset": "^0.73.2",
-    "patch-package": "^7.0.0",
-    "postinstall-postinstall": "^2.1.0"
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/runtime": "^7.25.0",
+    "@react-native-community/cli": "20.0.0",
+    "@react-native-community/cli-platform-android": "20.0.0",
+    "@react-native-community/cli-platform-ios": "20.0.0",
+    "@react-native/babel-preset": "0.81.1",
+    "@react-native/metro-config": "0.81.1",
+    "@react-native/typescript-config": "0.81.1",
+    "@types/react": "^19.1.0",
+    "react-native-builder-bob": "^0.40.13",
+    "react-native-monorepo-config": "^0.1.9"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
