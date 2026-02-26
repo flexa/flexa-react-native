@@ -53,14 +53,14 @@ android {
   packagingOptions {
     pickFirst 'META-INF/versions/9/OSGI-INF/MANIFEST.MF'
   }
-}
 
-sourceSets {
-  main {
-    java.srcDirs += [
-      "generated/java",
-      "generated/jni"
-    ]
+  sourceSets {
+    main {
+      java.srcDirs += [
+        "generated/java",
+        "generated/jni"
+      ]
+    }
   }
 }
 
